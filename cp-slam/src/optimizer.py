@@ -212,8 +212,10 @@ class Optimizer():
                 loss_item = []
                 
             loss.backward()
+        
             feature_optimizer.step() 
             scheduler_cosine_feature.step()
+
             if MLP_update:
                 self.render_optimizer.step()
         return feature_map

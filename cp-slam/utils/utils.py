@@ -8,7 +8,7 @@ from torch_scatter import scatter_mean,scatter_min
 import gtsam
 
 def get_rays_original(u, v, K, c2w):  #inverse_intrinsics version
-    i, j = torch.meshgrid(u, v)  # pytorch's meshgrid has indexing='ij'
+    i, j = torch.meshgrid(u, v, indexing='ij')  # pytorch's meshgrid has indexing='ij'
     i = i.t()
     j = j.t()
     uv_hm_list = torch.stack([i,j,torch.ones_like(i)],-1).reshape(-1,3)
@@ -23,7 +23,7 @@ def get_rays_original(u, v, K, c2w):  #inverse_intrinsics version
 
 
 def get_rays(u, v, K, c2w):  # K_version,  equal to get_rays
-    i, j = torch.meshgrid(u, v)  # pytorch's meshgrid has indexing='ij'
+    i, j = torch.meshgrid(u, v, indexing='ij')  # pytorch's meshgrid has indexing='ij'
     i = i.t()
     j = j.t()
 

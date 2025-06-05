@@ -108,8 +108,18 @@ class ScannetDataset(Dataset):
         self.pose_paths = sorted(glob.glob(os.path.join(cfg['pose_path'], '*.txt')),
                             key=lambda x: int(os.path.basename(x)[:-4]))
         self.device = device
+
+
+    '''
+
     def __len__(self):
         return len(self.img_path)
+    
+    '''
+    
+    def __len__(self):
+        return min(len(self.color_files), len(self.poses))
+  
     def get_poses(self,id):
         with open(self.pose_paths[id], "r") as f:
             lines = f.readlines()

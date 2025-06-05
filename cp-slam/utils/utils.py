@@ -152,6 +152,11 @@ def depth_filter(uv_list, depth_img):  #filter out points with zero depth value
     return filtered_list
 
 def get_depth(uv_list, depth_img):  #filter out points with zero depth value
+
+    H, W = depth_img.shape # Add latercd 
+    uv_list[:, 1] = torch.clamp(uv_list[:, 1], 0, H - 1)# Add later
+    uv_list[:, 0] = torch.clamp(uv_list[:, 0], 0, W - 1)# Add later
+
     depth_img[depth_img > 8.0] = 0
     depth_img[depth_img < 0.3] = 0
     depth_list = depth_img[uv_list[:,1], uv_list[:,0]]
@@ -183,18 +188,22 @@ def quad2rotation(quad):
     rot_mat[:, 2, 2] = 1 - two_s * (qi ** 2 + qj ** 2)
     return rot_mat
 
-def get_tensor_from_frame(RT, Tquad=False):
-    """
-    Convert transformation matrix to quaternion and translation.
 
-    """
+"""
+def get_tensor_from_frame(RT, Tquad=False):
+    
+    #Convert transformation matrix to quaternion and translation.
+
+    
     gpu_id = -1
     if type(RT) == torch.Tensor:
         if RT.get_device() != -1:  # RT.get_device() == -1  on  cpu
             RT = RT.detach().cpu()
             gpu_id = RT.get_device()
         RT = RT.numpy()
+
     from mathutils import Matrix
+
     R, T = RT[:3, :3], RT[:3, 3]
     rot = Matrix(R)
     quad = rot.to_quaternion()
@@ -206,6 +215,42 @@ def get_tensor_from_frame(RT, Tquad=False):
     if gpu_id != -1:
         tensor = tensor.to(gpu_id)
     return tensor
+"""
+from scipy.spatial.transform import Rotation as R
+
+def get_tensor_from_frame(RT, Tquad=False):
+    """
+    Convert transformation matrix to quaternion and translation.
+
+    Args:
+        RT: (4x4) transformation matrix (numpy or torch tensor)
+        Tquad: whether to return [T, quat] or [quat, T]
+
+    Returns:
+        (7,) torch tensor: concatenated quaternion and translation
+    """
+    gpu_id = -1
+    if isinstance(RT, torch.Tensor):
+        if RT.get_device() != -1:
+            gpu_id = RT.get_device()
+        RT = RT.detach().cpu().numpy()
+
+    rot_matrix = RT[:3, :3]
+    trans = RT[:3, 3]
+    
+    quat = R.from_matrix(rot_matrix).as_quat()  # (x, y, z, w)
+    quat = np.roll(quat, 1)  # Convert to (w, x, y, z) to match Blender/mathutils
+
+    if Tquad:
+        tensor = np.concatenate([trans, quat], axis=0)
+    else:
+        tensor = np.concatenate([quat, trans], axis=0)
+
+    tensor = torch.from_numpy(tensor).float()
+    if gpu_id != -1:
+        tensor = tensor.to(gpu_id)
+    return tensor
+
 
 def get_camera_from_tensor(inputs, device):
     """

@@ -34,11 +34,13 @@ class Explorer_single():
         self.end_one = Manager().Value(c_bool, False)
         self.end_two = Manager().Value(c_bool, False)
 
-        self.explorer_one = Explorer(configer_0, device='cuda:0', conf=conf, name='Agent_0', agent_id=0)
-        self.explorer_two = Explorer(configer_1, device='cuda:1', conf=conf, name='Agent_1', agent_id=1)
-        self.fusion = Fusion(configer, configer_0, configer_1, device='cuda:2')
 
-        self.feder = FedAVG(device='cuda:2') 
+        self.explorer_one = Explorer(configer_0, device='cuda:0', conf=conf, name='Agent_0', agent_id=0)
+        self.explorer_two = Explorer(configer_1, device='cuda:0', conf=conf, name='Agent_1', agent_id=1)
+        self.fusion = Fusion(configer, configer_0, configer_1, device='cuda:0')
+
+        self.feder = FedAVG(device='cuda:0') 
+        
     def run(self):
         '''
         define local and central Locks to avoid process conflicts.

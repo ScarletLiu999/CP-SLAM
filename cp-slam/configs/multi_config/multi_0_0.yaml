@@ -1,13 +1,25 @@
 name: 'replica'
 device: 'cuda:0'
-color_data: '/mnt/nas_9/group/hujiarui/nips/apart_1_part1/results/frame*.jpg' 
-depth_data: '/mnt/nas_9/group/hujiarui/nips/apart_1_part1/results/depth*.png'
-pose_path: '/mnt/nas_9/group/hujiarui/nips/apart_1_part1/traj.txt'
-viz_path: './output/multi/multi_0/part_0/viz/'
-output_point_path: './output/multi/multi_0/part_0/map.pt'
-output_point_path_ply: './output/multi/multi_0/part_0/map.ply'
-output_traj_path: './output/multi/multi_0/part_0/traj.pt'
-output_traj_path_ply: './output/multi/multi_0/part_0/traj.ply'
+
+
+#color_data: './data/CP-SLAM_dataset/Apart-0/apart_0_part1/results/frame*.jpg'
+#depth_data: './data/CP-SLAM_dataset/Apart-0/apart_0_part1/results/depth*.png'
+#pose_path: './data/CP-SLAM_dataset/Apart-0/apart_0_part1/traj.txt'
+
+color_data: './data/CP-SLAM_dataset/desk_part1/results/frame*.png'
+depth_data: './data/CP-SLAM_dataset/desk_part1/results/depth*.png'
+pose_path: './data/CP-SLAM_dataset/desk_part1/traj.txt'
+
+
+viz_path: './output/apart0/part1/viz/'
+output_point_path: './output/apart0/part1/map.pt'
+output_point_path_ply: './output/apart0/part1/map.ply'
+output_traj_path: './output/apart0/part1/traj.pt'
+output_traj_path_ply: './output/apart0/part1/traj.ply'
+
+outliers: 0.2
+
+
 jitter: 0.3
 rays_count: 1200 
 map_patch_size: [4, 4]  
@@ -44,14 +56,24 @@ vox_res: 100
 threshold: 0.88
 threshold_coarse: 0.80
 
+#camera:
+#  H: 680 
+#  W: 1200
+#  fx: 600.0
+#  fy: 600.0
+#  cx: 599.5
+#  cy: 339.5
+#  png_depth_scale: 6553.5 
+#  crop_edge: 0
+
 camera:
-  H: 680 
-  W: 1200
+  H: 480
+  W: 640
   fx: 600.0
   fy: 600.0
-  cx: 599.5
-  cy: 339.5
-  png_depth_scale: 6553.5 
+  cx: 319.5   # 640/2 - 0.5
+  cy: 239.5   # 480/2 - 0.5
+  png_depth_scale: 6553.5
   crop_edge: 0
 F_net:
   input_channel: 141 #141

@@ -2,7 +2,11 @@ name: 'replica'
 
 output_pgo_traj: '...'
 output_pgo_map: '...'
-pose_path: '...'
+
+#pose_path: './data/CP-SLAM_dataset/Apart-0/apart_0_part1/traj.txt'
+pose_path: './data/CP-SLAM_dataset/desk_part1/traj.txt'
+
+outliers: 0.2
 
 jitter: 0.3
 rays_count: 1200 
@@ -40,15 +44,26 @@ loop_cam_iters: 150
 vox_res: 100
 
 
+#camera:
+#  H: 680 
+#  W: 1200
+#  fx: 600.0
+#  fy: 600.0
+#  cx: 599.5
+#  cy: 339.5
+#  png_depth_scale: 6553.5 
+#  crop_edge: 0
+
 camera:
-  H: 680 
-  W: 1200
+  H: 480
+  W: 640
   fx: 600.0
   fy: 600.0
-  cx: 599.5
-  cy: 339.5
-  png_depth_scale: 6553.5 
+  cx: 319.5   # 640/2 - 0.5
+  cy: 239.5   # 480/2 - 0.5
+  png_depth_scale: 6553.5
   crop_edge: 0
+  
 F_net:
   input_channel: 141 
   intermediate_channel: 256

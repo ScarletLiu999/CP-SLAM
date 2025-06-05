@@ -185,7 +185,7 @@ class Explorer():
                 depth_viz, color_viz = self.optimizer.render_whole_image(frame, self.camera_rgbd, self.total_map, self.feature_map, self.device)
                 self.optimizer.net_to_train()
                 cv2.imwrite(self.cfg['viz_path'] + 'render_depth_{:05}.png'.format(frame.id), depth_viz)
-                cv2.imwrite(self.cfg['viz_path'] + 'render_color_{:05}.jpg'.format(frame.id), color_viz)
+                cv2.imwrite(self.cfg['viz_path'] + 'render_color_{:05}.png'.format(frame.id), color_viz)
                 continue
             
             # Pose optimization
@@ -245,7 +245,7 @@ class Explorer():
                     viz_frame = deepcopy(frame)
                     depth_viz, color_viz = self.optimizer.viz(viz_frame, self.camera_rgbd, self.total_map, self.feature_map, self.device)
                     cv2.imwrite(self.cfg['viz_path'] + 'render_depth_{:05}.png'.format(frame.id), depth_viz)
-                    cv2.imwrite(self.cfg['viz_path'] + 'render_color_{:05}.jpg'.format(frame.id), color_viz)
+                    cv2.imwrite(self.cfg['viz_path'] + 'render_color_{:05}.png'.format(frame.id), color_viz)
                 
                 self.update_share_data(share_data)
 

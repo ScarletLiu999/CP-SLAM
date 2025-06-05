@@ -1,7 +1,9 @@
 import torch.nn as nn
 import torch.nn.functional as F 
 from utils import *
-from inplace_abn import InPlaceABN 
+#from inplace_abn import InPlaceABN 
+import torch.nn as nn
+InPlaceABN = nn.BatchNorm2d
 
 class ConvBnReLU(nn.Module):
     '''
